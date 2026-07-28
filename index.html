@@ -42,6 +42,10 @@
 
   /* ── Masthead ── */
   header{padding:54px 0 30px; border-bottom:1px solid var(--ink)}
+  .byline{display:flex; align-items:center; gap:10px; margin-bottom:26px}
+  .byline .cap{font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--sub)}
+  .byline img{height:15px; width:auto; display:block; filter:invert(1)}
+  @media (prefers-color-scheme: dark){.byline img{filter:none}}
   .eyebrow{display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap;
     font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--sub); margin-bottom:16px}
   .eyebrow b{color:var(--gold); font-weight:600}
@@ -76,6 +80,9 @@
   .chip .dot{display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--cc); margin-right:7px; vertical-align:1px}
   .chip.on{background:var(--ink); border-color:var(--ink); color:var(--bg)}
   .chip:focus-visible{outline:2px solid var(--gold); outline-offset:2px}
+  .cal-nav{margin-left:auto; border:1px solid var(--line); background:var(--card); color:var(--sub); border-radius:999px;
+    padding:5px 12px 6px; font-size:12.5px; font-family:inherit; cursor:pointer; max-width:220px}
+  .cal-nav:focus-visible{outline:2px solid var(--gold); outline-offset:2px}
 
   /* ── Months ── */
   .month{padding:44px 0 8px}
@@ -129,6 +136,7 @@
 <body>
 <div class="wrap">
   <header>
+    <div class="byline"><span class="cap">Calendar by</span><img src="https://jhkim-lgtm.github.io/industry-calendars/logo-1club.png" alt="1%CLUB"></div>
     <div class="eyebrow">
       <span><b>1%CLUB</b>&nbsp; LUXURY INTELLIGENCE</span>
       <span id="today-label" class="mono"></span>
@@ -146,7 +154,17 @@
     <div class="radar" id="radar"></div>
   </header>
 
-  <nav class="filters" id="filters" aria-label="카테고리 필터"></nav>
+  <nav class="filters" id="filters" aria-label="카테고리 필터">
+    <select class="cal-nav" id="cal-nav" aria-label="다른 캘린더로 이동" onchange="if(this.value)location.href=this.value">
+      <option value="">다른 캘린더 ↗</option>
+      <option value="https://jhkim-lgtm.github.io/industry-calendars/">전체 허브</option>
+      <option value="https://jhkim-lgtm.github.io/industry-calendars/beauty/">뷰티</option>
+      <option value="https://jhkim-lgtm.github.io/industry-calendars/fashion/">패션</option>
+      <option value="https://jhkim-lgtm.github.io/industry-calendars/jewelry/">하이주얼리</option>
+      <option value="https://jhkim-lgtm.github.io/industry-calendars/watches/">시계</option>
+      <option value="https://jhkim-lgtm.github.io/industry-calendars/wellness/">웰니스&롱지비티</option>
+    </select>
+  </nav>
 
   <main id="months"></main>
 
@@ -256,6 +274,7 @@ function status(ev){
   };
   mk('all','전체 보기',null);
   Object.entries(CATS).forEach(([k,v])=>mk(k,v.label,v.color));
+  f.appendChild($('#cal-nav'));
 })();
 
 /* ── Months (윈도우 안의 달만) ── */
