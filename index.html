@@ -7,22 +7,23 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥂</text></svg>">
 <title>LUXE CALENDAR — 1%CLUB 럭셔리 인텔리전스</title>
 <style>
+  /* 블랙앤화이트 + 골드 포인트 (BK 지시 2026-07-28) */
   :root{
-    --bg:#F5F1E8; --bg2:#EFEADD; --card:#FFFDF7; --ink:#1A1712; --sub:#6E6557;
-    --line:rgba(26,23,18,.14); --line-soft:rgba(26,23,18,.07);
-    --gold:#9A7A33; --gold-soft:rgba(154,122,51,.12);
-    --c-fashion:#B04E72; --c-art:#6C58B8; --c-watch:#2F7D6D; --c-earn:#3E6FA8;
-    --c-culture:#B05E2A; --c-retail:#5A8440; --c-korea:#AC3E36;
-    --live:#2F7D42; --live-bg:rgba(47,125,66,.12);
-    --dim:.45; --shadow:0 1px 2px rgba(26,23,18,.05),0 8px 28px rgba(26,23,18,.06);
+    --bg:#FBFBFA; --bg2:#F2F2F0; --card:#FFFFFF; --ink:#141414; --sub:#6B6B6B;
+    --line:rgba(20,20,20,.14); --line-soft:rgba(20,20,20,.07);
+    --gold:#9A7A33; --gold-soft:rgba(154,122,51,.09);
+    --c-fashion:#9A7A33; --c-art:#9A7A33; --c-watch:#9A7A33; --c-earn:#9A7A33;
+    --c-culture:#9A7A33; --c-retail:#9A7A33; --c-korea:#9A7A33;
+    --live:#2F7D42; --live-bg:rgba(47,125,66,.1);
+    --dim:.45; --shadow:0 1px 2px rgba(20,20,20,.05),0 8px 28px rgba(20,20,20,.07);
   }
   @media (prefers-color-scheme: dark){
     :root{
-      --bg:#131117; --bg2:#0E0C12; --card:#1C1922; --ink:#EEE8DB; --sub:#9A9184;
-      --line:rgba(238,232,219,.16); --line-soft:rgba(238,232,219,.07);
+      --bg:#0E0E0E; --bg2:#0A0A0A; --card:#181818; --ink:#F2F0EC; --sub:#9C9C9C;
+      --line:rgba(242,240,236,.16); --line-soft:rgba(242,240,236,.07);
       --gold:#D2B06A; --gold-soft:rgba(210,176,106,.13);
-      --c-fashion:#DE8BA8; --c-art:#A995E6; --c-watch:#6FC2AE; --c-earn:#82ABDC;
-      --c-culture:#DE9159; --c-retail:#93C06E; --c-korea:#E07E74;
+      --c-fashion:#D2B06A; --c-art:#D2B06A; --c-watch:#D2B06A; --c-earn:#D2B06A;
+      --c-culture:#D2B06A; --c-retail:#D2B06A; --c-korea:#D2B06A;
       --live:#7CC98F; --live-bg:rgba(124,201,143,.14);
       --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 32px rgba(0,0,0,.35);
     }
@@ -87,6 +88,7 @@
   @media (max-width:640px){.month-note{margin-left:0; text-align:left}}
 
   .events{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px}
+  .empty-month{grid-column:1/-1; border:1px dashed var(--line); border-radius:2px; padding:18px 20px; color:var(--sub); font-size:13px; letter-spacing:.02em}
   .ev{background:var(--card); border:1px solid var(--line-soft); border-left:3px solid var(--cat); border-radius:4px;
     padding:16px 18px 15px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:8px; transition:opacity .2s}
   .ev.past{opacity:var(--dim)}
@@ -247,7 +249,7 @@ function status(ev){
       document.querySelectorAll('.ev').forEach(el=>el.classList.toggle('hidden',key!=='all'&&el.dataset.cat!==key));
       document.querySelectorAll('.month').forEach(m=>{
         const any=[...m.querySelectorAll('.ev')].some(el=>!el.classList.contains('hidden'));
-        m.style.display=any?'':'none';
+        m.style.display=(key==='all'||any)?'':'none';
       });
     });
     f.appendChild(b);
@@ -265,7 +267,11 @@ function status(ev){
     (byMonth[key]=byMonth[key]||[]).push(ev);
   });
   const root=$('#months');
-  Object.keys(byMonth).sort().forEach(key=>{
+  const allKeys=[];
+  for(let d=new Date(winStart); d<=winEnd; d=new Date(d.getFullYear(), d.getMonth()+1, 1)){
+    allKeys.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`);
+  }
+  allKeys.forEach(key=>{
     const [y,m]=key.split('-').map(Number);
     const meta=MONTH_THEMES[key]||{theme:''};
     const sec=document.createElement('section'); sec.className='month';
@@ -279,7 +285,11 @@ function status(ev){
       </div>
       <div class="events"></div>`;
     const grid=sec.querySelector('.events');
-    byMonth[key].sort((a,b)=>parse(a.s)-parse(b.s)).forEach(ev=>{
+    const evs=byMonth[key]||[];
+    if(evs.length===0){
+      grid.innerHTML='<div class="empty-month">이 달은 예정된 대형 이벤트가 없습니다 — 다음 시즌을 준비하는 구간.</div>';
+    }
+    evs.sort((a,b)=>parse(a.s)-parse(b.s)).forEach(ev=>{
       const st=status(ev);
       const card=document.createElement('article');
       card.className='ev'+(st.k==='past'?' past':'');
