@@ -6,7 +6,7 @@
    데이터는 항상 내년 12월까지 채워져 있어야 한다.
    ============================================================ */
 
-const LAST_UPDATED = '2026-09-04';
+const LAST_UPDATED = '2026-09-05';
 
 const CATS = {
   fashion:{label:'패션위크', color:'var(--c-fashion)'},
