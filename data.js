@@ -6,7 +6,7 @@
    데이터는 항상 내년 12월까지 채워져 있어야 한다.
    ============================================================ */
 
-const LAST_UPDATED = '2026-09-08';
+const LAST_UPDATED = '2026-09-09';
 
 const CATS = {
   fashion:{label:'패션위크', color:'var(--c-fashion)'},
@@ -118,7 +118,7 @@ const EVENTS = [
   {s:'2027-03-14', e:'2027-03-14', cat:'culture', title:'아카데미 시상식', place:'LA', approx:true,
    angle:'레드카펫 = 하이주얼리·워치 각축전. "오스카 주얼리 결산" 콘텐츠.',
    sales:'—'},
-  {s:'2027-03-25', e:'2027-03-28', cat:'art', title:'Art Basel Hong Kong', place:'홍콩', approx:true,
+  {s:'2027-03-25', e:'2027-03-27', cat:'art', title:'Art Basel Hong Kong', place:'홍콩',
    angle:'아시아 아트마켓 바로미터. 9월 서울 아트위크의 전초전으로 커버.',
    sales:'홍콩 진출 갤러리·브랜드 → 9월 프리즈 서울 제안의 리드 소스.'},
 
